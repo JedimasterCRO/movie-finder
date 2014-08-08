@@ -15,11 +15,11 @@
 			<div class="col-md-2">
 			<nav class="navbar" role="navigation">
 				<ul class="nav nav-pills nav-stacked">
-					<li><a class="btn" style="text-align: left;" href="#"><span class="glyphicon glyphicon-home"></span> Home</a></li>
-					<li><a class="btn" style="text-align: left;" href="#"><span class="glyphicon glyphicon-registration-mark"></span> Register</a></li>
-					<li><a class="btn" style="text-align: left;" href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-					<li><a class="btn" style="text-align: left;" href="#"><span class="glyphicon glyphicon-star-empty"></span> Top10</a></li>
-					<li><a class="btn" style="text-align: left;" href="#"><span class="glyphicon glyphicon-cog"></span> Account</a></li>
+					<li><a class="btn" style="text-align: left;" href="#"><span class="glyphicon glyphicon-home"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Home</a></li>
+					<li><a class="btn" style="text-align: left;" href="#"><span class="glyphicon glyphicon-registration-mark"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Register</a></li>
+					<li><a class="btn" style="text-align: left;" href="#"><span class="glyphicon glyphicon-log-in"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Login</a></li>
+					<li><a class="btn" style="text-align: left;" href="#"><span class="glyphicon glyphicon-star-empty"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Top10</a></li>
+					<li><a class="btn" style="text-align: left;" href="#"><span class="glyphicon glyphicon-cog"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Account</a></li>
 				</ul>
 				</nav>
 			</div>
