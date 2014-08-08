@@ -72,7 +72,13 @@ hr{
   margin: auto;
   padding-bottom: 5px;
   border-bottom: 2px solid #ddd;
-  width: 60%;
+}
+
+.col-tborder{
+  margin: auto;
+  margin-top: 5px;
+  padding-top: 5px;
+  border-top: 2px solid #ddd;
 }
 
 h1,
@@ -164,4 +170,8 @@ a:focus {
 }
 a:focus {
   outline: none;
+}
+
+.row {
+  width: 100%;
 }

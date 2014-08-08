@@ -11,8 +11,19 @@
 		<center><a href="#"><img class="logo" src="img/mf_logo.png" alt="logo"></a></center>
 	</div>
 	</div>
-		<div class="row col-bborder">
-			<div class="col-md-9 col-rborder"><h1>Naslov 1</h1>
+		<div class="row">
+			<div class="col-md-2">
+			<nav class="navbar" role="navigation">
+				<ul class="nav nav-pills nav-stacked">
+					<li><a class="btn" style="text-align: left;" href="#"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+					<li><a class="btn" style="text-align: left;" href="#"><span class="glyphicon glyphicon-registration-mark"></span> Register</a></li>
+					<li><a class="btn" style="text-align: left;" href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+					<li><a class="btn" style="text-align: left;" href="#"><span class="glyphicon glyphicon-star-empty"></span> Top10</a></li>
+					<li><a class="btn" style="text-align: left;" href="#"><span class="glyphicon glyphicon-cog"></span> Account</a></li>
+				</ul>
+				</nav>
+			</div>
+			<div class="col-md-7 col-rborder"><h1>Naslov 1</h1>
 			<p>
 				<a href="#">Lorem ipsum</a> dolor sit amet, consectetur adipiscing elit. Sed accumsan purus sed porttitor suscipit. Nam viverra nisi sit amet enim auctor, et pulvinar tellus faucibus. Donec ultricies, turpis eu eleifend scelerisque, lectus arcu elementum magna, nec blandit erat augue eget libero. Suspendisse venenatis, ligula id congue egestas, metus metus dapibus ligula, nec eleifend metus sem vitae diam. Vivamus quis varius mi. Curabitur nec congue risus. Pellentesque accumsan faucibus adipiscing. Suspendisse sit amet neque et neque euismod malesuada a quis augue. Vestibulum ultrices augue at congue elementum.
 
@@ -27,6 +38,6 @@
 			</div>
 			<div class="col-md-2">Top lista</div>
 		</div>
-		<div class="navbar"></div>
+		<div class="col-md-9 col-md-push-2 col-tborder">footer</div>
 </body>
 </html>
