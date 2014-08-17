@@ -11,5 +11,14 @@
 |
 */
 
-Route::get('/', 'HomeController@showWelcome');
+Route::get('/', array('as' => 'home', 'uses' => 'HomeController@showWelcome'));
+Route::get('register', array('as' => 'register', 'uses' => 'HomeController@getRegister'));
+Route::get('registered', array('uses' => 'HomeController@registered'));
+Route::get('login', array('uses' => 'HomeController@getLogin'));
+Route::get('ranking', array('as' => 'ranking', 'uses' => 'HomeController@ranking'));
+Route::get('logout', array('uses' => 'HomeController@logout'));
+
+Route::post('register', array('before' => 'csrf', 'uses' => 'HomeController@postRegister'));
+Route::post('login', array('uses' => 'HomeController@postLogin'));
+
 

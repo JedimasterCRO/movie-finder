@@ -55,7 +55,7 @@ return array(
 		'mysql' => array(
 			'driver'    => 'mysql',
 			'host'      => 'localhost',
-			'database'  => 'szc-baza',
+			'database'  => 'movie-finder',
 			'username'  => 'root',
 			'password'  => '',
 			'charset'   => 'utf8',
