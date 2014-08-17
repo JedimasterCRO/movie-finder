@@ -25,6 +25,7 @@
 				{{Session::get('success')}}
 			@endif
 			</div>
+<<<<<<< HEAD
 			<div class="col-md-8 centered">
 			{{Form::open(array('method' => 'post', 'url' => 'login', 'class' => 'col-md-3 col-md-push-5'))}}
 			<h2>Login</h2>
@@ -43,5 +44,21 @@
 			</div>
 		</div>
 		<div class="col-md-8 col-md-push-2 col-tborder">footer</div>
+=======
+			<div class="col-md-9 centered"><h2>Login</h2>
+			{{Form::open(array('method' => 'post', 'url' => 'register', 'class' => 'col-md-4 col-md-push-4'))}}
+			{{Form::token()}}
+				<p>E-mail: {{Form::text('email', null, array('class' => 'form-control'))}} </p>
+				<p>Password: {{Form::password('password', array('class' => 'form-control'))}} </p>
+			{{Form::submit('Pošalji', array('class' => 'btn bg-primary'))}}
+			{{Form::reset('Reset', array('class' => 'btn bg-primary'))}}
+			{{Form::close()}}
+			</div>
+			@if($errors->has())
+				{{implode('<br>', $errors->all())}}
+			@endif
+		</div>
+		<div class="col-md-9 col-md-push-2 col-tborder">footer</div>
+>>>>>>> origin/master
 </body>
 </html>

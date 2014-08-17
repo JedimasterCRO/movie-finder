@@ -22,3 +22,10 @@ Route::post('register', array('before' => 'csrf', 'uses' => 'HomeController@post
 Route::post('login', array('uses' => 'HomeController@postLogin'));
 
 
+Route::get('register', array('uses' => 'HomeController@getRegister'));
+Route::get('registered', array('uses' => 'HomeController@registered'));
+Route::get('login', array('uses' => 'HomeController@getLogin'));
+
+Route::post('register', array('before' => 'csrf', 'uses' => 'HomeController@postRegister'));
+
+
