@@ -27,7 +27,6 @@ class HomeController extends BaseController {
 
 	public function postRegister(){
 		$input = array(
-<<<<<<< HEAD
 			'username' => htmlspecialchars(Input::get('username')),
 			'email' => htmlspecialchars(Input::get('email')),
 			'password' => htmlspecialchars(Input::get('password')),
@@ -39,53 +38,18 @@ class HomeController extends BaseController {
 			'email' => 'required|email|min:5|unique:users',
 			'password' => 'required|alpha_num|min:5',
 			'password_confirmation' => 'required|alpha_num|min:5|same:password'
-=======
-			'name' => htmlspecialchars(Input::get('name')),
-			'lastname' => htmlspecialchars(Input::get('lastname')),
-			'email' => htmlspecialchars(Input::get('email')),
-			'password' => htmlspecialchars(Input::get('password')),
-			'password_confirmation' => htmlspecialchars(Input::get('password_confirmation')),
-			'avatar' => htmlspecialchars(Input::get('avatar'))
 			);
 
-		$rules = array(
-			'name' => 'required|min:3|alpha',
-			'lastname' => 'required|alpha_dash',
-			'email' => 'required|email|min:5|unique:users',
-			'password' => 'required|alpha_num|min:5',
-			'password_confirmation' => 'required|alpha_num|min:5|same:password',
-			'avatar' => 'mimes:jpg,jpeg,bmp,png,gif|size:2050'
->>>>>>> origin/master
-			);
 
 		$validator = Validator::make($input, $rules);
 		if($validator->passes()){
-<<<<<<< HEAD
 				$data = array(
 					'username' => Input::get('username'),
 					'email' => Input::get('email'),
-					'password' => Hash::make(Input::get('password'))
-				);
-=======
-			$avatar = Input::get('avatar');
-			if(empty($avatar)){
-				$data = array(
-					'name' => Input::get('name'),
-					'lastname' => Input::get('lastname'),
-					'email' => Input::get('email'),
 					'password' => Hash::make(Input::get('password')),
-					'photo' => NULL
+					'created_at' => date('Y-m-d')
 				);
-			} else {
-				$data = array(
-					'name' => Input::get('name'),
-					'lastname' => Input::get('lastname'),
-					'email' => Input::get('email'),
-					'password' => Hash::make(Input::get('password')),
-					'photo' => Input::get('avatar')
-				);
-			}
->>>>>>> origin/master
+				
 			User::insert($data);
 		return View::make('registered', $data)->with('success', 'Uspješno ste se registrirali!');
 		} else {
@@ -103,7 +67,6 @@ class HomeController extends BaseController {
 		return View::make('login');
 	}
 
-<<<<<<< HEAD
 
 	public function postLogin(){
 		$input = array(
@@ -135,7 +98,63 @@ class HomeController extends BaseController {
 	public function ranking(){
 		return View::make('ranking');
 	}
+	
+	
+	public function getInsertMovie(){
+		$category = Category::orderBy('category_name')->get();
+		return View::make('insert_movie')->with('category', $category);
+	}
+	
+	
+	public function postInsertMovie(){
 
-=======
->>>>>>> origin/master
+		$input = array(
+			'name' => htmlspecialchars(trim(Input::get('name'))),
+			'year' => htmlspecialchars(trim(Input::get('year'))),
+			'description' => htmlspecialchars(trim(Input::get('description'))),
+			'category' => Input::get('category'),
+			'director' => htmlspecialchars(trim(Input::get('director'))),
+			'stars' => htmlspecialchars(trim(Input::get('stars'))),
+			'file' => Input::file('file')
+			);
+		$sourceFile = Input::file('file');
+		$filename = $sourceFile->getClientOriginalName();
+		$extension = $sourceFile->getClientOriginalExtension();
+		$file = basename($filename, '.'.$extension);
+		$newFilename = $file.str_random(8).'.'.$extension;
+		$destinationPath = 'img/movie_covers/';
+			
+		$rules = array(
+			'name' => 'required|alpha_spaces|unique:movies,name',
+			'year' => 'required|digits:4',
+			'description' => 'required|min:20|max:1000',
+			'category' => 'required',
+			'director' => 'required|alpha_spaces|min:4',
+			'stars' => 'required|alpha_spaces|min:4',
+			'file' => 'required|image|max:500'
+			);
+			
+		$validator = Validator::make($input, $rules);
+		//dd($validator->passes());
+		if($validator->passes()){
+			$imageSave = $sourceFile->move($destinationPath, $newFilename);
+			$data = array(
+			'name' => ucwords(Input::get('name')),
+			'year' => Input::get('year'),
+			'description' => Input::get('description'),
+			'category_id' => (int)Input::get('category'),
+			'director' => ucwords(Input::get('director')),
+			'stars' => ucwords(Input::get('stars')),
+			'cover_image' => $destinationPath.$newFilename
+			);
+
+			//dd($data);
+			Movies::insert($data);
+			
+			return Redirect::to('insert_movie');
+			} else {
+			return Redirect::back()->withErrors($validator);
+			}
+	}
+
 }

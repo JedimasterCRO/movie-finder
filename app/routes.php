@@ -17,15 +17,10 @@ Route::get('registered', array('uses' => 'HomeController@registered'));
 Route::get('login', array('uses' => 'HomeController@getLogin'));
 Route::get('ranking', array('as' => 'ranking', 'uses' => 'HomeController@ranking'));
 Route::get('logout', array('uses' => 'HomeController@logout'));
+Route::get('insert_movie', array('as' => 'insert', 'uses' => 'HomeController@getInsertMovie'));
 
 Route::post('register', array('before' => 'csrf', 'uses' => 'HomeController@postRegister'));
 Route::post('login', array('uses' => 'HomeController@postLogin'));
-
-
-Route::get('register', array('uses' => 'HomeController@getRegister'));
-Route::get('registered', array('uses' => 'HomeController@registered'));
-Route::get('login', array('uses' => 'HomeController@getLogin'));
-
-Route::post('register', array('before' => 'csrf', 'uses' => 'HomeController@postRegister'));
+Route::post('insert_movie', array('uses' => 'HomeController@postInsertMovie'));
 
 

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Index</title>
+	<title>Insert movie</title>
 	<meta charset="UTF-8">
 	{{HTML::style('css/bootstrap.min.css')}}
 	{{HTML::style('css/main.css')}}
@@ -32,25 +32,19 @@
 				{{Session::get('success')}}
 			@endif
 			</div>
-			<div class="col-md-8 centered">
-			{{Form::open(array('method' => 'post', 'url' => 'login', 'class' => 'col-md-3 col-md-push-5'))}}
-			<h2>Login</h2>
-				<p>E-mail: {{Form::text('email', null, array('class' => 'form-control centered'))}} </p>
-				@if($errors->has('email')) 
-					{{'<p style="color:red;">'.$errors->first('email').'</p>'}}
-				@endif
-				<p>Password: {{Form::password('password', array('class' => 'form-control centered'))}} </p>
-				@if($errors->has('password')) 
-					{{'<p style="color:red;">'.$errors->first('password').'</p>'}}
-				@endif
-			{{Form::submit('Pošalji', array('class' => 'btn btn-lg bg-primary'))}}
-			{{Form::reset('Reset', array('class' => 'btn btn-lg bg-primary'))}}
+			<div class="col-md-9"><h2>Insert new movie</h2>
+			{{Form::open(array('method' => 'post', 'url' => 'insert_movie', 'class' => 'form-inline', 'files' => true, 'enctype' => 'multipart/form-data'))}}
+			<p>Movie name:&nbsp; {{Form::text('name', null, array('class' => 'form-control'))}} </p><p class="text-danger">{{$errors->first('name')}}</p>
+			<p>Year released:&nbsp; {{Form::text('year', null, array('class' => 'form-control'))}} </p><p class="text-danger">{{$errors->first('year')}}</p>
+			<p>Description:&nbsp; {{Form::textarea('description', null, array('class' => 'form-control'))}} </p><p class="text-danger">{{$errors->first('description')}}</p>
+			<p>Category:&nbsp; {{Form::select('category', $category->lists('category_name', 'id'), null, array('class' => 'form-control'))}} </p>
+			<p>Director:&nbsp; {{Form::text('director', null, array('class' => 'form-control'))}}</p><p class="text-danger">{{$errors->first('director')}}</p>
+			<p>Stars:&nbsp; {{Form::text('stars', null, array('class' => 'form-control'))}}&nbsp; NOTE: Ukoliko unosite više glumaca odvojite ih zarezom (npr. Tom Hanks, Brad Pitt,...)</p><p class="text-danger">{{$errors->first('stars')}}</p>
+			<p>Movie cover:&nbsp; {{Form::file('file')}} </p><p class="text-danger">{{$errors->first('file')}}</p>
+			{{Form::submit('Posalji', array('class' => 'btn bg-primary'))}}
+			{{Form::reset('Reset', array('class' => 'btn bg-primary'))}}
 			{{Form::close()}}
 			</div>
-		</div>
-			@if($errors->has())
-				{{implode('<br>', $errors->all())}}
-			@endif
 		</div>
 		<div class="col-md-9 col-md-push-2 col-tborder">footer</div>
 </body>

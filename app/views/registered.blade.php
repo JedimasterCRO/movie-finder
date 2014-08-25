@@ -21,11 +21,7 @@
 				</nav>
 			</div>
 			<div class="col-md-9">
-<<<<<<< HEAD
 			<h4 class="text-success">Hvala {{$username}}. Uspješno ste se registrirali!</h4></h4>
-=======
-			<h4 class="text-success">Hvala {{$name}}. Uspješno ste se registrirali!</h4></h4>
->>>>>>> origin/master
 			<p>Ulogirajte se {{HTML::link('login', 'ovdje.')}}</p>
 			</div>
 		</div>
