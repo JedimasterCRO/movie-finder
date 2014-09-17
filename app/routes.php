@@ -18,6 +18,7 @@ Route::get('login', array('uses' => 'HomeController@getLogin'));
 Route::get('ranking', array('as' => 'ranking', 'uses' => 'HomeController@ranking'));
 Route::get('logout', array('uses' => 'HomeController@logout'));
 Route::get('insert_movie', array('as' => 'insert', 'uses' => 'HomeController@getInsertMovie'));
+Route::get('my_movies', array('uses' => 'HomeController@myMovies'));
 
 Route::post('register', array('before' => 'csrf', 'uses' => 'HomeController@postRegister'));
 Route::post('login', array('uses' => 'HomeController@postLogin'));

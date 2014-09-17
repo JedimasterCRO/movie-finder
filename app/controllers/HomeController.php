@@ -96,7 +96,8 @@ class HomeController extends BaseController {
 
 
 	public function ranking(){
-		return View::make('ranking');
+		$movies = Movies::all();
+		return View::make('ranking', array('movies' => $movies));
 	}
 	
 	
@@ -111,6 +112,7 @@ class HomeController extends BaseController {
 		$input = array(
 			'name' => htmlspecialchars(trim(Input::get('name'))),
 			'year' => htmlspecialchars(trim(Input::get('year'))),
+			'movie_length' => htmlspecialchars(trim(Input::get('movie_length'))),
 			'description' => htmlspecialchars(trim(Input::get('description'))),
 			'category' => Input::get('category'),
 			'director' => htmlspecialchars(trim(Input::get('director'))),
@@ -127,6 +129,7 @@ class HomeController extends BaseController {
 		$rules = array(
 			'name' => 'required|alpha_spaces|unique:movies,name',
 			'year' => 'required|digits:4',
+			'movie_length' => 'required|digits:2,3',
 			'description' => 'required|min:20|max:1000',
 			'category' => 'required',
 			'director' => 'required|alpha_spaces|min:4',
@@ -135,17 +138,19 @@ class HomeController extends BaseController {
 			);
 			
 		$validator = Validator::make($input, $rules);
-		//dd($validator->passes());
+
 		if($validator->passes()){
 			$imageSave = $sourceFile->move($destinationPath, $newFilename);
 			$data = array(
 			'name' => ucwords(Input::get('name')),
 			'year' => Input::get('year'),
+			'movie_length' => Input::get('movie_length'),
 			'description' => Input::get('description'),
 			'category_id' => (int)Input::get('category'),
 			'director' => ucwords(Input::get('director')),
 			'stars' => ucwords(Input::get('stars')),
-			'cover_image' => $destinationPath.$newFilename
+			'cover_image' => $destinationPath.$newFilename,
+			'user_id' => Auth::user()->id
 			);
 
 			//dd($data);
@@ -155,6 +160,12 @@ class HomeController extends BaseController {
 			} else {
 			return Redirect::back()->withErrors($validator);
 			}
+	}
+
+	public function myMovies(){
+		$movies = Movies::where('user_id', Auth::user()->id)->get();
+		//dd($movies->toArray());
+		return View::make('my_movies', array('movies' => $movies));
 	}
 
 }

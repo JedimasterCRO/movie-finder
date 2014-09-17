@@ -52,7 +52,7 @@ body {
   font-family: "Lato", Helvetica, Arial, sans-serif;
   font-size: 18px;
   line-height: 1.72222;
-  color: #ddd;
+  color: #FFF;
   background-color: #2f3135;
 }
 
@@ -79,6 +79,22 @@ hr{
   margin-top: 10px;
   padding-top: 5px;
   border-top: 2px solid #ddd;
+}
+
+.col-bottom-shadow{
+  padding-bottom: 20px;
+  -webkit-box-shadow: inset 0px -16px 6px -16px #259DFF;
+  -moz-box-shadow: inset 0px -16px 6px -16px #259DFF;
+  box-shadow: inset 0px -16px 6px -16px #259DFF;
+}
+
+b.blue{
+  color: #259DFF;
+}
+
+div.img-desc{
+  float:left;
+  padding-bottom: 5px;
 }
 
 h1,
