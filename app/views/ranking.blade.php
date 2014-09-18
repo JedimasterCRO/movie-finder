@@ -1,43 +1,22 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Index</title>
-	<meta charset="UTF-8">
-	{{HTML::style('css/bootstrap.min.css')}}
-	{{HTML::style('css/main.css')}}
-</head>
-<body class="bg-default">
-	<div class="navbar navbar-default navbar-static-top">
-		<center><a href="#"><img class="logo" src="img/mf_logo.png" alt="logo"></a></center>
-	</div>
-	</div>
-		<div class="row">
-			<div class="col-md-2">
-			<nav class="navbar" role="navigation">
-				<ul class="nav nav-pills nav-stacked">
-					<li>{{HTML::link('/', '&nbsp;Home', array('class' => 'btn glyphicon glyphicon-home', 'style' => 'text-align: left;'))}}</li>
-					@if(!Auth::check())
-					<li>{{HTML::link('register', '&nbsp;Register', array('class' => 'btn glyphicon glyphicon-registration-mark', 'style' => 'text-align: left;'))}}</li>
-					<li>{{HTML::link('login', '&nbsp;Login', array('class' => 'btn glyphicon glyphicon-log-in', 'style' => 'text-align: left;'))}}</li>
-					@else
-					<li>{{HTML::link('my_movies', '&nbsp;My Movies', array('class' => 'btn glyphicon glyphicon-log-in', 'style' => 'text-align: left;'))}}</li>
-					<li>{{HTML::link('insert_movie', '&nbsp;Insert Movie', array('class' => 'btn glyphicon glyphicon-log-in', 'style' => 'text-align: left;'))}}</li>
-					<li>{{HTML::link('ranking', '&nbsp;Top10', array('class' => 'btn glyphicon glyphicon-star-empty', 'style' => 'text-align: left;'))}}</li>
-					<li>{{HTML::link('logout', '&nbsp;Logout', array('class' => 'btn glyphicon glyphicon-cog', 'style' => 'text-align: left;'))}}</li>
-					@endif
-				</ul>
-				</nav>
-			</div>
+@extends('templates.master')
+
+@section('title')
+	Movie rankings
+@stop
+
+@section('content')
 			<div class="col-md-9">
+			<center><h3>Movie rankings</h3></center>
 			<table class="table table-hover">
-				<th>Redni br.</th><th>Naziv filma</th><th>Godina</th><th>Prosjek</th>
+				<th>Num.</th><th>Movie name</th><th>Year</th><th>Movie grade</th><th>Wanna rate?</th>
 				<?php $i=1; ?>
 				@foreach($movies as $movie)
 				<tr>
 					<td>{{$i}}</td>
-					<td>{{$movie->name}}</td>
-					<td>{{$movie->year}}</td>
-					<td>{{'prosjek'}}</td>
+					<td>{{$movie['name']}}</td>
+					<td>{{$movie['year']}}</td>
+					<td>{{$movie['avgGrade']}}</td>
+					<td>{{HTML::link('rate_movie/'.$movie['id'], 'Rate me!')}}</td>
 				</tr>
 				<?php $i++; ?>
 				@endforeach
@@ -47,3 +26,4 @@
 		<div class="col-md-9 col-md-push-2 col-tborder"></div>
 </body>
 </html>
+@stop

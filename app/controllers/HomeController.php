@@ -96,19 +96,46 @@ class HomeController extends BaseController {
 
 
 	public function ranking(){
-		$movies = Movies::all();
-		return View::make('ranking', array('movies' => $movies));
+		if(Auth::check()){
+			$movies = Movies::all();
+			$grades = Ranking::all();
+
+			foreach($movies as $movie){
+				foreach($grades as $grade){
+					if($movie->id == $grade->movie_id){
+						(double)$avg = $grade->total/$grade->vote_num;
+
+						$data[] = array('id' => $movie->id, 'name' => $movie->name, 'year' => $movie->year, 'avgGrade' => $avg);
+					}
+				}
+			}
+
+			//sortiranje asocijativnog polja po prosjeku
+			function cmp($a, $b){
+				return $b['avgGrade'] - $a['avgGrade'];
+			}
+			usort($data, "cmp");
+
+			return View::make('ranking', array('movies' => $data));
+		} else {
+			return Redirect::to('login');
+		}
 	}
 	
 	
 	public function getInsertMovie(){
-		$category = Category::orderBy('category_name')->get();
-		return View::make('insert_movie')->with('category', $category);
+		if(Auth::check()){
+			$category = Category::orderBy('category_name')->get();
+			return View::make('insert_movie')->with('category', $category);
+		} else {
+			return Redirect::to('login');
+		}
 	}
 	
 	
 	public function postInsertMovie(){
 
+		if(Auth::check()){
 		$input = array(
 			'name' => htmlspecialchars(trim(Input::get('name'))),
 			'year' => htmlspecialchars(trim(Input::get('year'))),
@@ -160,12 +187,64 @@ class HomeController extends BaseController {
 			} else {
 			return Redirect::back()->withErrors($validator);
 			}
+		} else {
+			return Redirect::to('login');
+		}
 	}
 
 	public function myMovies(){
+		if(Auth::check()){
 		$movies = Movies::where('user_id', Auth::user()->id)->get();
-		//dd($movies->toArray());
 		return View::make('my_movies', array('movies' => $movies));
+		} else {
+			return Redirect::to('login');
+		}
+	}
+
+
+	public function rateMovie($id){
+		if(Auth::check()){
+		$grades = array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+		$movie = Movies::find($id);
+
+		return View::make('rate_movie', array('grades' => $grades, 'movie' => $movie));
+		} else {
+			return Redirect::to('login');
+		}
+	}
+
+
+	public function validateRateMovie(){
+
+		if(Auth::check()){
+		$grade = array('grade' => Input::get('grade'));
+		$rules = array(
+			'grade' => 'required'
+			);
+
+		$validator = Validator::make($grade, $rules);
+
+		if($validator->passes()){
+			$rankings = Ranking::where('movie_id', Input::get('movie_id'))->first();
+			if(empty($rankings)){
+				Ranking::insert(array('movie_id' => Input::get('movie_id'), 'vote_num' => 0, 'total' => 0));
+				$rankings->total = 0;
+			}
+
+			$data = array(
+				'vote_num' => $rankings->vote_num + 1,
+				'total' => $rankings->total + $grade['grade']
+				);
+
+			Ranking::where('movie_id', Input::get('movie_id'))->update($data);
+			$rated = 1;
+			return Redirect::back()->with('success', 'Thank you for rating this movie!')->with('rated', $rated);
+		} else {
+			return Redirect::back()->withErrors($validator);
+		}
+	} else {
+			return Redirect::to('login');
+		}
 	}
 
 }
