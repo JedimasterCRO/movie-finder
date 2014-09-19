@@ -136,27 +136,31 @@ class HomeController extends BaseController {
 	public function postInsertMovie(){
 
 		if(Auth::check()){
+
 		$input = array(
 			'name' => htmlspecialchars(trim(Input::get('name'))),
-			'year' => htmlspecialchars(trim(Input::get('year'))),
-			'movie_length' => htmlspecialchars(trim(Input::get('movie_length'))),
+			'year' => Input::get('year'),
+			'movie_length' => Input::get('movie_length'),
 			'description' => htmlspecialchars(trim(Input::get('description'))),
 			'category' => Input::get('category'),
 			'director' => htmlspecialchars(trim(Input::get('director'))),
 			'stars' => htmlspecialchars(trim(Input::get('stars'))),
 			'file' => Input::file('file')
 			);
-		$sourceFile = Input::file('file');
-		$filename = $sourceFile->getClientOriginalName();
-		$extension = $sourceFile->getClientOriginalExtension();
-		$file = basename($filename, '.'.$extension);
-		$newFilename = $file.str_random(8).'.'.$extension;
-		$destinationPath = 'img/movie_covers/';
-			
+
+		$sourceFile = $input['file'];
+		if(isset($sourceFile)){
+			$filename = $sourceFile->getClientOriginalName();
+			$extension = $sourceFile->getClientOriginalExtension();
+			$file = basename($filename, '.'.$extension);
+			$newFilename = $file.str_random(8).'.'.$extension;
+			$destinationPath = 'img/movie_covers/';
+		}
+			//dd($newFilename);
 		$rules = array(
 			'name' => 'required|alpha_spaces|unique:movies,name',
 			'year' => 'required|digits:4',
-			'movie_length' => 'required|digits:2,3',
+			'movie_length' => 'required|digits_between:2,3',
 			'description' => 'required|min:20|max:1000',
 			'category' => 'required',
 			'director' => 'required|alpha_spaces|min:4',
@@ -164,8 +168,8 @@ class HomeController extends BaseController {
 			'file' => 'required|image|max:500'
 			);
 			
-		$validator = Validator::make($input, $rules);
-
+		$validator = Validator::make(Input::all(), $rules);
+//dd($validator->passes());
 		if($validator->passes()){
 			$imageSave = $sourceFile->move($destinationPath, $newFilename);
 			$data = array(
@@ -183,9 +187,9 @@ class HomeController extends BaseController {
 			//dd($data);
 			Movies::insert($data);
 			
-			return Redirect::to('insert_movie');
+				return Redirect::to('my_movies');
 			} else {
-			return Redirect::back()->withErrors($validator);
+				return Redirect::back()->withErrors($validator)->withInput();
 			}
 		} else {
 			return Redirect::to('login');

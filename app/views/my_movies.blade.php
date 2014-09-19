@@ -36,7 +36,7 @@
 			@endif
 				<h4>{{$movie->name.' ('.$movie->year.')'}}</h4>
 				<div class="img-desc">
-					<img src="{{$movie->cover_image}}" alt="{{$movie->name}}" style="float:left; margin-right: 15px;">
+					<img src="{{$movie->cover_image}}" alt="{{$movie->name}}" style="float:left; margin-right: 15px;" height="250px">
 					<p><b class="blue">Description:</b><br> {{$movie->description}} </p>
 				</div>
 				<div style="float:left;">
@@ -47,6 +47,9 @@
 				</div>
 			</div>
 			@endforeach
+			@if(!isset($movie))
+				{{'Niste još dodali nijedan film!'}}
+			@endif
 		</div>
 		<div class="col-md-9 col-md-push-2"></div>
 </body>
