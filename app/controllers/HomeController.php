@@ -30,23 +30,41 @@ class HomeController extends BaseController {
 			'username' => htmlspecialchars(Input::get('username')),
 			'email' => htmlspecialchars(Input::get('email')),
 			'password' => htmlspecialchars(Input::get('password')),
-			'password_confirmation' => htmlspecialchars(Input::get('password_confirmation'))
+			'password_confirmation' => htmlspecialchars(Input::get('password_confirmation')),
+			'avatar' => Input::get('avatar')
 			);
+
+		$sourceFile = $input['avatar'];
+		if(isset($sourceFile)){
+			$filename = $sourceFile->getClientOriginalName();
+			$extension = $sourceFile->getClientOriginalExtension();
+			$file = basename($filename, '.'.$extension);
+			$newFilename = $file.str_random(8).'.'.$extension;
+			$destinationPath = 'img/avatars/';
+		} else {
+			$destinationPath = NULL;
+			$newFilename = NULL;
+		}
 
 		$rules = array(
 			'username' => 'required|min:5|alpha_num|unique:users',
 			'email' => 'required|email|min:5|unique:users',
 			'password' => 'required|alpha_num|min:5',
-			'password_confirmation' => 'required|alpha_num|min:5|same:password'
+			'password_confirmation' => 'required|alpha_num|min:5|same:password',
+			'avatar' => 'image|max:500'
 			);
 
 
 		$validator = Validator::make($input, $rules);
 		if($validator->passes()){
+			if(isset($destinationPath) && isset($newFilename)){
+			$imageSave = $sourceFile->move($destinationPath, $newFilename);
+			}
 				$data = array(
 					'username' => Input::get('username'),
 					'email' => Input::get('email'),
 					'password' => Hash::make(Input::get('password')),
+					'avatar' => $destinationPath.$newFilename,
 					'created_at' => date('Y-m-d')
 				);
 				
@@ -81,7 +99,8 @@ class HomeController extends BaseController {
 
 		$validator = Validator::make($input, $rules);
 		if(Auth::attempt($input)){
-			return Redirect::route('home', $input);
+			$user = User::where('email', $input['email'])->first();
+			return Redirect::route('home', $user);
 		} else {
 			return Redirect::back()->withErrors($validator);
 		}
@@ -103,18 +122,22 @@ class HomeController extends BaseController {
 			foreach($movies as $movie){
 				foreach($grades as $grade){
 					if($movie->id == $grade->movie_id){
-						(double)$avg = $grade->total/$grade->vote_num;
+						if($grade->vote_num != 0){
+						$avg = $grade->total/$grade->vote_num;
+						} else {
+							$avg = 0;
+						}
 
-						$data[] = array('id' => $movie->id, 'name' => $movie->name, 'year' => $movie->year, 'avgGrade' => $avg);
+						$data[] = array('id' => $movie->id, 'name' => $movie->name, 'year' => $movie->year, 'avgGrade' => $avg, 'votesNo' => $grade->vote_num);
 					}
 				}
 			}
-
 			//sortiranje asocijativnog polja po prosjeku
-			function cmp($a, $b){
-				return $b['avgGrade'] - $a['avgGrade'];
+			$average = array();
+			foreach($data as $key => $val){
+				$average[$key] = $val['avgGrade'];
 			}
-			usort($data, "cmp");
+			array_multisort($average, SORT_DESC, $data);
 
 			return View::make('ranking', array('movies' => $data));
 		} else {
@@ -186,6 +209,10 @@ class HomeController extends BaseController {
 
 			//dd($data);
 			Movies::insert($data);
+			$movie = Movies::where('name', $data['name'])->where('user_id', $data['user_id'])->first();
+
+			//dd($movie);
+			Ranking::insert(array('movie_id' => $movie->id, 'vote_num' => 0, 'total' => 0));
 			
 				return Redirect::to('my_movies');
 			} else {
@@ -230,10 +257,6 @@ class HomeController extends BaseController {
 
 		if($validator->passes()){
 			$rankings = Ranking::where('movie_id', Input::get('movie_id'))->first();
-			if(empty($rankings)){
-				Ranking::insert(array('movie_id' => Input::get('movie_id'), 'vote_num' => 0, 'total' => 0));
-				$rankings->total = 0;
-			}
 
 			$data = array(
 				'vote_num' => $rankings->vote_num + 1,
@@ -242,7 +265,7 @@ class HomeController extends BaseController {
 
 			Ranking::where('movie_id', Input::get('movie_id'))->update($data);
 			$rated = 1;
-			return Redirect::back()->with('success', 'Thank you for rating this movie!')->with('rated', $rated);
+			return Redirect::to('ranking')->with('success', 'Thank you for rating this movie!')->with('rated', $rated);
 		} else {
 			return Redirect::back()->withErrors($validator);
 		}

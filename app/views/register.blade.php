@@ -34,11 +34,12 @@
 			@endif
 			</div>
 			<div class="col-md-9"><h2>Registriraj se</h2>
-			{{Form::open(array('method' => 'post', 'url' => 'register', 'class' => 'form-inline col-md-9'))}}
+			{{Form::open(array('method' => 'post', 'url' => 'register', 'class' => 'form-inline col-md-9', 'files' => true, 'enctype' => 'multipart/form-data'))}}
 			<p>Username:&nbsp; {{Form::text('username', null, array('class' => 'form-control'))}} </p><p class="text-danger">{{$errors->first('username')}}</p>
 			<p>E-mail:&nbsp; {{Form::text('email', null, array('class' => 'form-control'))}} </p><p class="text-danger">{{$errors->first('email')}}</p>
 			<p>Password:&nbsp; {{Form::password('password', array('class' => 'form-control'))}} </p><p class="text-danger">{{$errors->first('password')}}</p>
 			<p>Password confirm:&nbsp; {{Form::password('password_confirmation', array('class' => 'form-control'))}} </p><p class="text-danger">{{$errors->first('password_confirmation')}}</p>
+			<p>Avatar (optional):&nbsp; {{Form::file('avatar')}}</p>
 			{{Form::submit('Pošalji', array('class' => 'btn bg-primary'))}}&nbsp;
 			{{Form::reset('Reset', array('class' => 'btn bg-primary'))}}
 			{{Form::close()}}

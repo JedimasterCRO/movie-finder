@@ -14,6 +14,12 @@
 		<div class="row">
 			<div class="col-md-2">
 			<nav class="navbar" role="navigation">
+			@if(Auth::check() && !empty(Auth::user()->avatar))
+				<img src="{{Auth::user()->avatar}}" alt="avatar" class="img-circle" style="margin-left: 15px;margin-bottom: 10px;width: 140px;height: 140px;" >
+				<p align="center">{{Auth::user()->username}}</p>
+			@else
+				<img src="img/default-avatar.jpg" alt="default" class="img-circle" style="margin-left: 15px;margin-bottom: 10px;">
+			@endif
 				<ul class="nav nav-pills nav-stacked">
 					<li>{{HTML::link('/', '&nbsp;Home', array('class' => 'btn glyphicon glyphicon-home', 'style' => 'text-align: left;'))}}</li>
 					@if(!Auth::check())
@@ -29,9 +35,6 @@
 				</nav>
 			</div>
 			<div class="col-md-7 col-rborder"><h1>Naslov 1</h1>
-			@if(Auth::check())
-			<h4>Dobrodošao, {{Auth::user()->username}}</h4>
-			@endif
 			<p>
 				<a href="#">Lorem ipsum</a> dolor sit amet, consectetur adipiscing elit. Sed accumsan purus sed porttitor suscipit. Nam viverra nisi sit amet enim auctor, et pulvinar tellus faucibus. Donec ultricies, turpis eu eleifend scelerisque, lectus arcu elementum magna, nec blandit erat augue eget libero. Suspendisse venenatis, ligula id congue egestas, metus metus dapibus ligula, nec eleifend metus sem vitae diam. Vivamus quis varius mi. Curabitur nec congue risus. Pellentesque accumsan faucibus adipiscing. Suspendisse sit amet neque et neque euismod malesuada a quis augue. Vestibulum ultrices augue at congue elementum. <br><br>
 

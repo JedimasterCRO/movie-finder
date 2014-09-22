@@ -14,6 +14,11 @@
 		<div class="row">
 			<div class="col-md-2">
 			<nav class="navbar" role="navigation">
+			@if(Auth::check() && !empty(Auth::user()->avatar))
+				<img src="{{Auth::user()->avatar}}" alt="avatar" class="img-circle" style="margin-left: 15px;margin-bottom: 10px; width: 140px;height: 140px;">
+			@else
+				<img src="img/default-avatar.jpg" alt="default" class="img-circle" style="margin-left: 15px;margin-bottom: 10px;">
+			@endif
 				<ul class="nav nav-pills nav-stacked">
 					<li>{{HTML::link('/', '&nbsp;Home', array('class' => 'btn glyphicon glyphicon-home', 'style' => 'text-align: left;'))}}</li>
 					@if(!Auth::check())
