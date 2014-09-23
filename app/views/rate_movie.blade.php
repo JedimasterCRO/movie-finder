@@ -16,7 +16,8 @@
 			<nav class="navbar" role="navigation">
 			@if(Auth::check() && !empty(Auth::user()->avatar))
 				<img src="../{{Auth::user()->avatar}}" alt="avatar" class="img-circle" style="margin-left: 15px;margin-bottom: 10px; width: 140px;height: 140px;">
-			@else
+				<p align="center">{{Auth::user()->username}}</p>
+			@elseif(Auth::check() && empty(Auth::user()->avatar))
 				<img src="../img/default-avatar.jpg" alt="default" class="img-circle" style="margin-left: 15px;margin-bottom: 10px;">
 			@endif
 				<ul class="nav nav-pills nav-stacked">
@@ -27,6 +28,7 @@
 					@else
 					<li>{{HTML::link('my_movies', '&nbsp;My Movies', array('class' => 'btn glyphicon glyphicon-log-in', 'style' => 'text-align: left;'))}}</li>
 					<li>{{HTML::link('insert_movie', '&nbsp;Insert Movie', array('class' => 'btn glyphicon glyphicon-log-in', 'style' => 'text-align: left;'))}}</li>
+					<li>{{HTML::link('all_movies', '&nbsp;All Movies', array('class' => 'btn glyphicon glyphicon-star-empty', 'style' => 'text-align: left;'))}}</li>
 					<li>{{HTML::link('ranking', '&nbsp;Top10', array('class' => 'btn glyphicon glyphicon-star-empty', 'style' => 'text-align: left;'))}}</li>
 					<li>{{HTML::link('logout', '&nbsp;Logout', array('class' => 'btn glyphicon glyphicon-cog', 'style' => 'text-align: left;'))}}</li>
 					@endif

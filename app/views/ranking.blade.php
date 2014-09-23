@@ -8,7 +8,7 @@
 			<div class="col-md-9">
 			<center><h3>Movie rankings</h3></center>
 			<table class="table table-hover">
-				<th>Num.</th><th class="text-center">Movie name</th><th>Year</th><th>Movie grade</th><th>Votes No.</th><th>Wanna rate?</th>
+				<th>Num.</th><th class="text-center">Movie name</th><th>Year</th><th>Movie rate</th><th>Category</th><th>Wanna rate?</th>
 				<?php $i=1; ?>
 				@foreach($movies as $movie)
 				<tr>
@@ -18,9 +18,9 @@
 					@if($movie['avgGrade'] != 0)
 					<td class="text-center">{{$movie['avgGrade']}}</td>
 					@else
-					<td>{{'unrated'}}</td>
+					<td class="text-center">{{'unrated'}}</td>
 					@endif
-					<td class="text-center">{{$movie['votesNo']}}</td>
+					<td class="text-center">{{$movie['category']}}</td>
 					<td class="text-center">{{HTML::link('rate_movie/'.$movie['id'], 'Rate me!')}}</td>
 				</tr>
 				<?php $i++; ?>

@@ -16,9 +16,10 @@
 			<nav class="navbar" role="navigation">
 			@if(Auth::check() && !empty(Auth::user()->avatar))
 				<img src="{{Auth::user()->avatar}}" alt="avatar" class="img-circle" style="margin-left: 15px;margin-bottom: 10px;width: 140px;height: 140px;" >
-				<p align="center">{{Auth::user()->username}}</p>
-			@else
+				<p class="orange" align="center">{{Auth::user()->username}}</p>
+			@elseif(Auth::check() && empty(Auth::user()->avatar))
 				<img src="img/default-avatar.jpg" alt="default" class="img-circle" style="margin-left: 15px;margin-bottom: 10px;">
+				<p class="orange" align="center">{{Auth::user()->username}}</p>
 			@endif
 				<ul class="nav nav-pills nav-stacked">
 					<li>{{HTML::link('/', '&nbsp;Home', array('class' => 'btn glyphicon glyphicon-home', 'style' => 'text-align: left;'))}}</li>
@@ -28,23 +29,40 @@
 					@else
 					<li>{{HTML::link('my_movies', '&nbsp;My Movies', array('class' => 'btn glyphicon glyphicon-log-in', 'style' => 'text-align: left;'))}}</li>
 					<li>{{HTML::link('insert_movie', '&nbsp;Insert Movie', array('class' => 'btn glyphicon glyphicon-log-in', 'style' => 'text-align: left;'))}}</li>
+					<li>{{HTML::link('all_movies', '&nbsp;All Movies', array('class' => 'btn glyphicon glyphicon-star-empty', 'style' => 'text-align: left;'))}}</li>
 					<li>{{HTML::link('ranking', '&nbsp;Top10', array('class' => 'btn glyphicon glyphicon-star-empty', 'style' => 'text-align: left;'))}}</li>
 					<li>{{HTML::link('logout', '&nbsp;Logout', array('class' => 'btn glyphicon glyphicon-cog', 'style' => 'text-align: left;'))}}</li>
 					@endif
 				</ul>
 				</nav>
 			</div>
-			<div class="col-md-7 col-rborder"><h1>Naslov 1</h1>
-			<p>
-				<a href="#">Lorem ipsum</a> dolor sit amet, consectetur adipiscing elit. Sed accumsan purus sed porttitor suscipit. Nam viverra nisi sit amet enim auctor, et pulvinar tellus faucibus. Donec ultricies, turpis eu eleifend scelerisque, lectus arcu elementum magna, nec blandit erat augue eget libero. Suspendisse venenatis, ligula id congue egestas, metus metus dapibus ligula, nec eleifend metus sem vitae diam. Vivamus quis varius mi. Curabitur nec congue risus. Pellentesque accumsan faucibus adipiscing. Suspendisse sit amet neque et neque euismod malesuada a quis augue. Vestibulum ultrices augue at congue elementum. <br><br>
+			<div class="col-md-7 col-rborder">
+			<h2>Dobrodošli!</h2>
+			@if(Auth::check())
+			<p>Poštovani korisniče, <br>
 
-				Nulla aliquet turpis eget volutpat blandit. Sed a ipsum sollicitudin, tristique dui eu, congue eros. Duis non sapien in nisl scelerisque feugiat. Aliquam erat volutpat. Mauris pellentesque leo et dui faucibus commodo. Cras rutrum, tellus eu accumsan feugiat, nisi tortor placerat magna, in consectetur nunc elit eu tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc molestie lectus purus, sit amet sollicitudin eros varius nec. Donec commodo luctus pretium. Nulla luctus sapien vel sapien semper convallis. Suspendisse potenti. Nam ac scelerisque lorem, convallis tristique lectus. Nam congue turpis nisl, quis semper quam varius eu. <br><br>
+				dobrodošao na stranice Movie Findera, servisa za pregled, ocjenjivanje, dodavanje i pretraživanje filmova.  <br><br>
 
 				Nam congue ante sed aliquet commodo. Sed molestie ligula nec gravida tincidunt. Mauris vehicula nibh molestie ornare pharetra. Donec lacinia venenatis ipsum, quis sagittis lacus ultrices nec. Phasellus bibendum quam eu ultrices pharetra. Sed vestibulum mauris vitae convallis tincidunt. Proin vehicula nunc id tempus dignissim. Donec vitae condimentum arcu. In volutpat aliquet aliquet. Sed posuere vel lectus vitae interdum. Aenean nec fermentum purus. Integer pellentesque egestas arcu non condimentum. Maecenas non purus id enim sollicitudin auctor gravida eget purus.
 			</p>
+			@else
+				<p>Za potpuni doživljaj i korištenje svih mogućnosti ovog web servisa morate bili registrirani i/ili ulogirani.</p><p>Ukoliko niste registrirani ili ulogirani, to možete učiniti na linkovima s lijeve strane.</p><p>Lijep pozdrav od Movie Finder tima!</p>
+			@endif
 			</div>
-			<div class="col-md-2">Top lista</div>
+			<div class="col-md-3">
+			<p class="text-center bg-primary">TOP10 Movies</p>
+				<table class="table">
+				<?php $i=1; ?>
+				@foreach($movies as $movie)
+				<tr>
+					<td>{{$i}}.</td>
+					<td>{{{$movie['name']}}}</td>
+				</tr>
+				<?php $i++; ?>
+				@endforeach
+				</table>
+			</div>
 		</div>
-		<div class="col-md-9 col-md-push-2 col-tborder">footer</div>
+		<div class="col-md-12 col-tborder">footer</div>
 </body>
 </html>

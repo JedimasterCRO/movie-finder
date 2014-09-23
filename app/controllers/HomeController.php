@@ -16,7 +16,33 @@ class HomeController extends BaseController {
 	*/
 
 	public function showWelcome(){
-		return View::make('index');
+		if(Auth::check()){
+			$movies = Movies::with('category')->get();
+			$grades = Ranking::all();
+
+			foreach($movies as $movie){
+				foreach($grades as $grade){
+					if($movie->id == $grade->movie_id){
+						if($grade->vote_num != 0){
+						$avg = $grade->total/$grade->vote_num;
+						} else {
+							$avg = 0;
+						}
+
+						$data[] = array('id' => $movie->id, 'name' => $movie->name, 'year' => $movie->year, 'avgGrade' => $avg);
+					}
+				}
+			}
+			//sortiranje asocijativnog polja po prosjeku
+			$average = array();
+			foreach($data as $key => $val){
+				$average[$key] = $val['avgGrade'];
+			}
+			array_multisort($average, SORT_DESC, $data);
+				return View::make('index', array('movies' => $data));
+			} else {
+				return View::make('index');
+		}
 	}
 
 
@@ -100,6 +126,7 @@ class HomeController extends BaseController {
 		$validator = Validator::make($input, $rules);
 		if(Auth::attempt($input)){
 			$user = User::where('email', $input['email'])->first();
+
 			return Redirect::route('home', $user);
 		} else {
 			return Redirect::back()->withErrors($validator);
@@ -116,7 +143,7 @@ class HomeController extends BaseController {
 
 	public function ranking(){
 		if(Auth::check()){
-			$movies = Movies::all();
+			$movies = Movies::with('category')->get();
 			$grades = Ranking::all();
 
 			foreach($movies as $movie){
@@ -128,7 +155,7 @@ class HomeController extends BaseController {
 							$avg = 0;
 						}
 
-						$data[] = array('id' => $movie->id, 'name' => $movie->name, 'year' => $movie->year, 'avgGrade' => $avg, 'votesNo' => $grade->vote_num);
+						$data[] = array('id' => $movie->id, 'name' => $movie->name, 'year' => $movie->year, 'avgGrade' => $avg, 'category' => $movie->category->category_name);
 					}
 				}
 			}
@@ -270,6 +297,38 @@ class HomeController extends BaseController {
 			return Redirect::back()->withErrors($validator);
 		}
 	} else {
+			return Redirect::to('login');
+		}
+	}
+
+
+	public function allMovies(){
+		if(Auth::check()){
+			$movies = Movies::with('category')->get();
+			$grades = Ranking::all();
+
+			foreach($movies as $movie){
+				foreach($grades as $grade){
+					if($movie->id == $grade->movie_id){
+						if($grade->vote_num != 0){
+						$avg = $grade->total/$grade->vote_num;
+						} else {
+							$avg = 0;
+						}
+
+						$data[] = array('id' => $movie->id, 'name' => $movie->name, 'year' => $movie->year, 'avgGrade' => $avg, 'category' => $movie->category->category_name);
+					}
+				}
+			}
+			//sortiranje asocijativnog polja po prosjeku
+			$average = array();
+			foreach($data as $key => $val){
+				$average[$key] = $val['avgGrade'];
+			}
+			array_multisort($average, SORT_DESC, $data);
+
+			return View::make('all_movies', array('movies' => $data));
+		} else {
 			return Redirect::to('login');
 		}
 	}
