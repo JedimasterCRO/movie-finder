@@ -17,29 +17,19 @@ class HomeController extends BaseController {
 
 	public function showWelcome(){
 		if(Auth::check()){
-			$movies = Movies::with('category')->get();
-			$grades = Ranking::all();
-
-			foreach($movies as $movie){
-				foreach($grades as $grade){
-					if($movie->id == $grade->movie_id){
-						if($grade->vote_num != 0){
-						$avg = $grade->total/$grade->vote_num;
-						} else {
-							$avg = 0;
-						}
-
-						$data[] = array('id' => $movie->id, 'name' => $movie->name, 'year' => $movie->year, 'avgGrade' => $avg);
-					}
-				}
+			$category = Category::orderBy('category_name')->get();
+			$grades = Ranking::with('movie')->orderBy('rate', 'DESC')->take(10)->get(array('movie_id', DB::raw('(total/vote_num) AS rate')));
+			$latest = Movies::orderBy('created_at', 'DESC')->paginate(3);
+			$catId = Input::get('category');
+			$randomMovie = array();
+		if(isset($catId)){
+			$suggestMovie = Movies::where('category_id', $catId)->get();
+			if(array_key_exists('0', $suggestMovie->toArray())){
+				$rand = array_rand($suggestMovie->toArray(), 1);
+				$randomMovie = $suggestMovie[$rand];
 			}
-			//sortiranje asocijativnog polja po prosjeku
-			$average = array();
-			foreach($data as $key => $val){
-				$average[$key] = $val['avgGrade'];
-			}
-			array_multisort($average, SORT_DESC, $data);
-				return View::make('index', array('movies' => $data));
+		}
+				return View::make('index', array('movies' => $grades, 'category' => $category, 'suggest' => $randomMovie, 'latest' => $latest));
 			} else {
 				return View::make('index');
 		}
@@ -144,7 +134,7 @@ class HomeController extends BaseController {
 	public function ranking(){
 		if(Auth::check()){
 			$movies = Movies::with('category')->get();
-			$grades = Ranking::all();
+			$grades = Ranking::paginate(10);
 
 			foreach($movies as $movie){
 				foreach($grades as $grade){
@@ -231,7 +221,8 @@ class HomeController extends BaseController {
 			'director' => ucwords(Input::get('director')),
 			'stars' => ucwords(Input::get('stars')),
 			'cover_image' => $destinationPath.$newFilename,
-			'user_id' => Auth::user()->id
+			'user_id' => Auth::user()->id,
+			'created_at' => date('Y-m-d H:i:s')
 			);
 
 			//dd($data);
@@ -253,7 +244,8 @@ class HomeController extends BaseController {
 	public function myMovies(){
 		if(Auth::check()){
 		$movies = Movies::where('user_id', Auth::user()->id)->get();
-		return View::make('my_movies', array('movies' => $movies));
+		$rates = Ranking::orderBy('rate', 'DESC')->get(array('movie_id', 'vote_num', DB::raw('(total/vote_num) AS rate')));
+		return View::make('my_movies', array('movies' => $movies, 'rates' => $rates));
 		} else {
 			return Redirect::to('login');
 		}
@@ -264,8 +256,9 @@ class HomeController extends BaseController {
 		if(Auth::check()){
 		$grades = array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
 		$movie = Movies::find($id);
+		$rating = Ranking::where('movie_id', $id)->first();
 
-		return View::make('rate_movie', array('grades' => $grades, 'movie' => $movie));
+		return View::make('rate_movie', array('grades' => $grades, 'movie' => $movie, 'rating' => $rating));
 		} else {
 			return Redirect::to('login');
 		}

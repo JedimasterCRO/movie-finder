@@ -12,8 +12,8 @@
 			{{Form::submit('Traži', array('class' => 'btn btn-primary col-xs-2', 'style' => 'margin-left:5px;'))}}
 			{{Form::close()}}
 			<table class="table table-hover" style="margin-top:80px;">
-				<th class="orange">Num.</th><th class="orange text-center">Movie name</th><th class="orange">Year</th><th class="orange">Movie rate</th><th class="orange">Category</th>
-				<th class="orange">Details?</th>
+				<th class="orange">Rbr.</th><th class="orange text-center">Naziv filma</th><th class="orange">Godina izdanja</th><th class="orange">Ocjena</th><th class="orange">Žanr</th>
+				<th class="orange">Detalji?</th>
 				<?php $i=1; ?>
 				@foreach($movies as $movie)
 				<tr>
@@ -23,17 +23,17 @@
 					@if($movie['avgGrade'] != 0)
 					<td class="text-center">{{$movie['avgGrade']}}</td>
 					@else
-					<td>{{'unrated'}}</td>
+					<td>{{'neocjenjen'}}</td>
 					@endif
 					<td class="text-center">{{$movie['category']}}</td>
-					<td class="text-center">{{HTML::link('rate_movie/'.$movie['id'], 'Check out!')}}</td>
+					<td class="text-center">{{HTML::link('rate_movie/'.$movie['id'], 'Pročitaj!')}}</td>
 				</tr>
 				<?php $i++; ?>
 				@endforeach
 			</table>
 			</div>
 		</div>
-		<div class="col-md-9 col-md-push-2 col-tborder"></div>
+		<footer></footer>
 </body>
 </html>
 @stop

@@ -7,6 +7,6 @@ class Ranking extends Eloquent{
 	public $timestamps = false;
 
 	public function movie(){
-		return $this->belongsTo('Movie', 'movie_id', 'id');
+		return $this->belongsTo('Movies', 'movie_id', 'id');
 	}
 }

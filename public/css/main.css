@@ -224,3 +224,41 @@ a:focus {
 .orange{
   color:#FFAA25;
 }
+
+ table tr td.no-border{
+  border-top: none;
+}
+
+footer{
+  width: 100%;
+  height: 200px;
+  background-color: #FFF;
+  color: #000;
+  padding: 15px;
+  margin-top:10px;
+}
+
+div.thumbnail{
+  float:left;
+  margin:11px;
+  width: 30%;
+}
+
+.thumbnail a>img{
+  height:300px;
+}
+
+.text{
+  font-size: 16px;
+   overflow: hidden;
+   text-overflow: ellipsis;
+   display: -webkit-box;
+   line-height: 16px;     /* fallback */
+   max-height: 97px;      /* fallback */
+   -webkit-line-clamp: 6; /* number of lines to show */
+   -webkit-box-orient: vertical;
+}
+
+.menu-font-size{
+  font-size:18px;
+}

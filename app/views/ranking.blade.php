@@ -8,7 +8,8 @@
 			<div class="col-md-9">
 			<center><h3>Movie rankings</h3></center>
 			<table class="table table-hover">
-				<th>Num.</th><th class="text-center">Movie name</th><th>Year</th><th>Movie rate</th><th>Category</th><th>Wanna rate?</th>
+				<th class="orange">Num.</th><th class="text-center orange">Movie name</th><th class="orange">Year</th><th class="orange">Movie rate</th><th class="orange">Category</th>
+				<th class="orange">Wanna rate?</th>
 				<?php $i=1; ?>
 				@foreach($movies as $movie)
 				<tr>
@@ -28,7 +29,7 @@
 			</table>
 			</div>
 		</div>
-		<div class="col-md-9 col-md-push-2 col-tborder"></div>
+		<footer></footer>
 </body>
 </html>
 @stop
