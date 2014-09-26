@@ -43,8 +43,13 @@
 			<div class="col-md-9">
 				<h4>{{$movie->name.' ('.$movie->year.')'}}</h4>
 				<div class="img-desc">
-					<img src="../{{$movie->cover_image}}" alt="{{$movie->name}}" style="float:left; margin-right: 15px;" height="250px">
-					<p><b class="blue">Description:</b><br> {{$movie->description}} </p>
+					<div class="col-md-2" style="width:200px;">
+					<div>
+					<img src="../{{$movie->cover_image}}" alt="{{$movie->name}}" style="float:left; margin-right: 15px;" height="250px" width="100%">
+					{{HTML::link('rate_movie/'.$movie->id.'/edit', 'Edit!', array('class' => 'btn bg-primary menu-font-size', 'style' => 'width:100%;margin-top:5px;'))}}
+					</div>
+					</div>
+					<div class="col-md-9"><p><b class="blue">Description:</b><br> {{$movie->description}} </p></div>
 				<div style="float:left;">
 					<p><b class="blue">Director:</b> &nbsp;{{$movie->director}}</p>
 					<p><b class="blue">Stars:</b> &nbsp;{{$movie->stars}}</p>

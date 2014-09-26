@@ -28,6 +28,7 @@ Route::group(array('before' => 'auth'), function()
 	Route::get('rate_movie/{id}', array('uses' => 'HomeController@rateMovie'));
 	Route::get('all_movies', array('uses' => 'HomeController@allMovies'));
 	Route::get('movie_results', array('uses' => 'SearchController@searchMovies'));
+	Route::get('rate_movie/{id}/edit', array('uses' => 'HomeController@editMovie'));
 
 	Route::post('insert_movie', array('uses' => 'HomeController@postInsertMovie'));
 	Route::post('rate_movie/{id}', array('uses' => 'HomeController@validateRateMovie'));

@@ -11,7 +11,7 @@
 			@else
 				<div class="col-md-9 col-bottom-shadow">
 			@endif
-				<h4>{{$movie->name.' ('.$movie->year.')'}}</h4>
+				<h4><a href="rate_movie/{{$movie->id}}" >{{$movie->name.' ('.$movie->year.')'}}</a></h4>
 				<div class="img-desc">
 					<img src="{{$movie->cover_image}}" alt="{{$movie->name}}" style="float:left; margin-right: 15px;" height="250px">
 					<p><b class="blue">Opis:</b><br> {{$movie->description}} </p>

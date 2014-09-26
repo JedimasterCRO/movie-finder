@@ -295,6 +295,11 @@ class HomeController extends BaseController {
 	}
 
 
+	public function editMovie($id){
+		return View::make('edit_movie');
+	}
+
+
 	public function allMovies(){
 		if(Auth::check()){
 			$movies = Movies::with('category')->get();

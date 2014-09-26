@@ -40,9 +40,9 @@
 				</ul>
 				</nav>
 			</div>
+			@if(Auth::check())
 			<div class="col-md-7 col-rborder">
 			<h2>Dobrodošli!</h2>
-			@if(Auth::check())
 			<p>Poštovani korisniče, <br>
 
 				dobrodošao na stranice Movie Findera, servisa za pregled, ocjenjivanje, dodavanje i pretraživanje filmova.<br>
@@ -75,6 +75,8 @@
 				@endforeach
 				</div>
 			@else
+			<div class="col-md-7">
+			<h2>Dobrodošli!</h2>
 				<p>Za potpuni doživljaj i korištenje svih mogućnosti ovog web servisa morate bili registrirani i/ili ulogirani.</p><p>Ukoliko niste registrirani ili ulogirani, to možete učiniti na linkovima s lijeve strane.</p><p>Lijep pozdrav od Movie Finder tima!</p>
 			@endif
 			@if(Auth::check())

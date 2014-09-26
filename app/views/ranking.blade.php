@@ -1,15 +1,15 @@
 @extends('templates.master')
 
 @section('title')
-	Movie rankings
+	TOP10
 @stop
 
 @section('content')
 			<div class="col-md-9">
-			<center><h3>Movie rankings</h3></center>
+			<center><h3>TOP10 najbolje ocjenjenih filmova</h3></center>
 			<table class="table table-hover">
-				<th class="orange">Num.</th><th class="text-center orange">Movie name</th><th class="orange">Year</th><th class="orange">Movie rate</th><th class="orange">Category</th>
-				<th class="orange">Wanna rate?</th>
+				<th class="orange">Rbr.</th><th class="text-center orange">Naziv filma</th><th class="orange">Godina</th><th class="orange">Ocjena</th><th class="orange text-center">Žanr</th>
+				<th class="orange">Ocijeni?</th>
 				<?php $i=1; ?>
 				@foreach($movies as $movie)
 				<tr>
@@ -29,7 +29,7 @@
 			</table>
 			</div>
 		</div>
-		<footer></footer>
+		<footer class="navbar navbar-fixed-bottom"></footer>
 </body>
 </html>
 @stop
