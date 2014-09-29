@@ -128,7 +128,9 @@
 		<div class="box"></div>
 		<div class="box"></div>
 		<div class="box"></div>
-			<p class="text-footer">Designed & copyrighted by Goran Vinković</p>
+		<div class="text-footer">
+			<p>Designed & copyrighted by Goran Vinković</p>
+		</div>
 		</footer>
 		@endif
 </body>

@@ -10,21 +10,21 @@
 			<table class="table table-hover">
 				<th class="orange">Rbr.</th><th class="text-center orange">Naziv filma</th><th class="orange">Godina</th><th class="orange">Ocjena</th><th class="orange text-center">Žanr</th>
 				<th class="orange">Ocijeni?</th>
-				<?php $i=1; ?>
-				@foreach($movies as $movie)
+				@foreach($movies as $indeks => $movie)
+				@if($indeks < 10)
 				<tr>
-					<td style="text-align: center;">{{$i}}.</td>
-					<td>{{$movie['name']}}</td>
-					<td>{{$movie['year']}}</td>
-					@if($movie['avgGrade'] != 0)
-					<td class="text-center">{{$movie['avgGrade']}}</td>
+					<td style="text-align: center;">{{$indeks+1}}.</td>
+					<td>{{$movie->movie->name}}</td>
+					<td>{{$movie->movie->year}}</td>
+					@if($movie->rate != 0)
+					<td class="text-center">{{$movie->rate}}</td>
 					@else
 					<td class="text-center">{{'unrated'}}</td>
 					@endif
-					<td class="text-center">{{$movie['category']}}</td>
-					<td class="text-center">{{HTML::link('rate_movie/'.$movie['id'], 'Rate me!')}}</td>
+					<td class="text-center">{{$movie->movie->category->category_name}}</td>
+					<td class="text-center">{{HTML::link('rate_movie/'.$movie->movie->id, 'Rate me!')}}</td>
 				</tr>
-				<?php $i++; ?>
+				@endif
 				@endforeach
 			</table>
 			</div>

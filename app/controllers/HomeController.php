@@ -22,6 +22,7 @@ class HomeController extends BaseController {
 			$latest = Movies::orderBy('created_at', 'DESC')->paginate(3);
 			$catId = Input::get('category');
 			$randomMovie = array();
+
 		if(isset($catId)){
 			$suggestMovie = Movies::where('category_id', $catId)->get();
 			if(array_key_exists('0', $suggestMovie->toArray())){
@@ -133,30 +134,9 @@ class HomeController extends BaseController {
 
 	public function ranking(){
 		if(Auth::check()){
-			$movies = Movies::with('category')->get();
-			$grades = Ranking::paginate(10);
+			$grades = Ranking::with('movie')->orderBy('rate', 'DESC')->take(10)->get(array('movie_id', DB::raw('(total/vote_num) AS rate')));
 
-			foreach($movies as $movie){
-				foreach($grades as $grade){
-					if($movie->id == $grade->movie_id){
-						if($grade->vote_num != 0){
-						$avg = $grade->total/$grade->vote_num;
-						} else {
-							$avg = 0;
-						}
-
-						$data[] = array('id' => $movie->id, 'name' => $movie->name, 'year' => $movie->year, 'avgGrade' => $avg, 'category' => $movie->category->category_name);
-					}
-				}
-			}
-			//sortiranje asocijativnog polja po prosjeku
-			$average = array();
-			foreach($data as $key => $val){
-				$average[$key] = $val['avgGrade'];
-			}
-			array_multisort($average, SORT_DESC, $data);
-
-			return View::make('ranking', array('movies' => $data));
+			return View::make('ranking', array('movies' => $grades));
 		} else {
 			return Redirect::to('login');
 		}
@@ -225,11 +205,9 @@ class HomeController extends BaseController {
 			'created_at' => date('Y-m-d H:i:s')
 			);
 
-			//dd($data);
 			Movies::insert($data);
 			$movie = Movies::where('name', $data['name'])->where('user_id', $data['user_id'])->first();
 
-			//dd($movie);
 			Ranking::insert(array('movie_id' => $movie->id, 'vote_num' => 0, 'total' => 0));
 			
 				return Redirect::to('my_movies');
@@ -299,7 +277,7 @@ class HomeController extends BaseController {
 		if(Auth::check()){
 			$movie = Movies::find($id);
 			$category = Category::all();
-			//dd($movie);
+
 			return View::make('edit_movie', array('movie' => $movie, 'category' => $category));
 		} else {
 			return Redirect::to('/');
@@ -365,7 +343,6 @@ class HomeController extends BaseController {
 				$data += array('cover_image' => $cover);
 			}
 
-			//dd($data);
 			Movies::where('id', $id)->update($data);
 
 			return Redirect::to('my_movies');
