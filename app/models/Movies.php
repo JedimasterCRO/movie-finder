@@ -3,6 +3,7 @@
 
 class Movies extends Eloquent {
 	protected $table = 'movies';
+	protected $fillable = array('name');
 
 	public function category(){
 		return $this->belongsTo('Category', 'category_id', 'id');

@@ -32,5 +32,6 @@ Route::group(array('before' => 'auth'), function()
 
 	Route::post('insert_movie', array('uses' => 'HomeController@postInsertMovie'));
 	Route::post('rate_movie/{id}', array('uses' => 'HomeController@validateRateMovie'));
+	Route::post('rate_movie/{id}/edited', array('uses' => 'HomeController@postEditMovie'));
 });
 

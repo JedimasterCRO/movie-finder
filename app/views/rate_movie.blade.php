@@ -46,7 +46,9 @@
 					<div class="col-md-2" style="width:200px;">
 					<div>
 					<img src="../{{$movie->cover_image}}" alt="{{$movie->name}}" style="float:left; margin-right: 15px;" height="250px" width="100%">
+					@if($movie->user_id == Auth::user()->id)
 					{{HTML::link('rate_movie/'.$movie->id.'/edit', 'Edit!', array('class' => 'btn bg-primary menu-font-size', 'style' => 'width:100%;margin-top:5px;'))}}
+					@endif
 					</div>
 					</div>
 					<div class="col-md-9"><p><b class="blue">Description:</b><br> {{$movie->description}} </p></div>
@@ -75,6 +77,22 @@
 				</div>
 			</div>
 		</div>
-		<footer></footer>
+		<footer>
+		<div class="box">
+		<center><b>Kontakt</b></center>
+		<b>E-mail:</b> &nbsp;{{HTML::link('mailto:goran.vinkovic87@gmail.com', 'goran.vinkovic87@gmail.com')}} <br>
+		<b>Facebook:</b> &nbsp;{{HTML::link('https://www.facebook.com/goran.vinkovic.98', 'Goran Vinković', array('target' => '_blank'))}}
+		</div>
+		<div class="box">
+			<center><b>Linkovi</b></center>
+			<b>Filmovi:</b> &nbsp;{{HTML::link('http://www.imdb.com/', 'Imdb', array('target' => '_blank'))}} <br>
+			<b>Traileri:</b> &nbsp;{{HTML::link('http://www.traileraddict.com/', 'TrailerAddict', array('target' => '_blank'))}} <br>
+			<b>Titlovi:</b> &nbsp;{{HTML::link('http://titlovi.com/', 'Titlovi.com', array('target' => '_blank'))}} <br>
+		</div>
+		<div class="box"></div>
+		<div class="box"></div>
+		<div class="box"></div>
+			<p class="text-footer">Designed & copyrighted by Goran Vinković</p>
+		</footer>
 </body>
 </html>

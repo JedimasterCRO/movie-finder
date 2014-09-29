@@ -296,7 +296,83 @@ class HomeController extends BaseController {
 
 
 	public function editMovie($id){
-		return View::make('edit_movie');
+		if(Auth::check()){
+			$movie = Movies::find($id);
+			$category = Category::all();
+			//dd($movie);
+			return View::make('edit_movie', array('movie' => $movie, 'category' => $category));
+		} else {
+			return Redirect::to('/');
+		}
+	}
+
+
+	public function postEditMovie($id){
+
+		if(Auth::check()){
+
+		$input = array(
+			'name' => htmlspecialchars(trim(Input::get('name'))),
+			'year' => Input::get('year'),
+			'movie_length' => Input::get('movie_length'),
+			'description' => htmlspecialchars(trim(Input::get('description'))),
+			'category' => Input::get('category'),
+			'director' => htmlspecialchars(trim(Input::get('director'))),
+			'stars' => htmlspecialchars(trim(Input::get('stars'))),
+			'file' => Input::file('file')
+			);
+
+		$sourceFile = $input['file'];
+		if(isset($sourceFile)){
+			$filename = $sourceFile->getClientOriginalName();
+			$extension = $sourceFile->getClientOriginalExtension();
+			$file = basename($filename, '.'.$extension);
+			$newFilename = $file.str_random(8).'.'.$extension;
+			$destinationPath = 'img/movie_covers/';
+		}
+			//dd($newFilename);
+		$rules = array(
+			'name' => 'required|alpha_spaces|unique:movies,name,'.$id,
+			'year' => 'required|digits:4',
+			'movie_length' => 'required|digits_between:2,3',
+			'description' => 'required|min:20|max:1000',
+			'category' => 'required',
+			'director' => 'required|alpha_spaces|min:4',
+			'stars' => 'required|alpha_spaces|min:4',
+			'file' => 'image|max:500'
+			);
+			
+		$validator = Validator::make(Input::all(), $rules);
+		
+		if($validator->passes()){
+			if(isset($newFilename)){
+				$imageSave = $sourceFile->move($destinationPath, $newFilename);
+				$cover = $destinationPath.$newFilename;
+			}
+			$data = array(
+			'name' => ucwords(Input::get('name')),
+			'year' => Input::get('year'),
+			'movie_length' => Input::get('movie_length'),
+			'description' => Input::get('description'),
+			'category_id' => (int)Input::get('category'),
+			'director' => ucwords(Input::get('director')),
+			'stars' => ucwords(Input::get('stars')),
+			'user_id' => Auth::user()->id,
+			'updated_at' => date('Y-m-d H:i:s')
+			);
+
+			if(isset($cover)){
+				$data += array('cover_image' => $cover);
+			}
+
+			//dd($data);
+			Movies::where('id', $id)->update($data);
+
+			return Redirect::to('my_movies');
+			} else {
+				return Redirect::back()->withErrors($validator)->withInput();
+			}
+		}
 	}
 
 
